@@ -8,7 +8,7 @@ public class DatabaseConnection {
     // IMPORTANTE: Altere a URL, usuário e senha conforme a sua configuração do MySQL
     private static final String URL = "jdbc:mysql://localhost:3306/locadora";
     private static final String USER = "root";
-    private static final String PASSWORD = "@sua senha do MySQL"; // <-- COLOQUE SUA SENHA AQUI
+    private static final String PASSWORD = "@Lucas75369852"; // <-- COLOQUE SUA SENHA AQUI
 
     public static Connection connect() {
         try {

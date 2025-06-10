@@ -14,13 +14,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- Seção de dependências adicionada -->
     <dependencies>
         <!-- Dependência para o conector do MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
+        </dependency>
+
+        <!-- NOVA DEPENDÊNCIA PARA O ESTILO (FLATLAF) -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.4.1</version>
         </dependency>
     </dependencies>
 

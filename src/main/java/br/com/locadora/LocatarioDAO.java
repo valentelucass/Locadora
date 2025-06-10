@@ -1,16 +1,21 @@
 package br.com.locadora;
 
+import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocatarioDAO {
 
     public void inserirLocatario(Locatario locatario) {
-        // Usando o try-with-resources para garantir que a conexão seja fechada
         try (Connection conn = DatabaseConnection.connect()) {
-            if (conn == null) return; // Se a conexão falhar, não faz nada
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             String sql = "INSERT INTO Locatarios (CPF, Nome, Endereco, Telefone, data_inicio_contrato, data_fim_contrato, fk_Contratos_ID_contrato) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -22,39 +27,51 @@ public class LocatarioDAO {
                 stmt.setString(5, locatario.getDataInicio());
                 stmt.setString(6, locatario.getDataFim());
                 stmt.setInt(7, locatario.getContratoId());
-
                 stmt.executeUpdate();
-                System.out.println("Locatário inserido com sucesso!");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir locatário: " + e.getMessage());
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao inserir locatário: \n" + e.getMessage(), "Erro de SQL", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void listarLocatarios() {
+    // --- MÉTODO CORRIGIDO ---
+    // A assinatura do método agora retorna uma List<Locatario>
+    public List<Locatario> listarLocatarios() {
+        // 1. Cria uma lista vazia para armazenar os locatários
+        List<Locatario> locatarios = new ArrayList<>();
+
         try (Connection conn = DatabaseConnection.connect()) {
-            if (conn == null) return;
+            if (conn == null) {
+                JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
+                return locatarios; // Retorna a lista vazia em caso de falha
+            }
 
             String sql = "SELECT * FROM Locatarios";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql);
                  ResultSet rs = stmt.executeQuery()) {
 
-                System.out.println("\n--- LISTA DE LOCATÁRIOS ---");
+                // 2. Itera sobre cada linha do resultado do banco
                 while (rs.next()) {
-                    System.out.println("CPF: " + rs.getString("CPF"));
-                    System.out.println("Nome: " + rs.getString("Nome"));
-                    System.out.println("Endereço: " + rs.getString("Endereco"));
-                    System.out.println("Telefone: " + rs.getString("Telefone"));
-                    System.out.println("Início do contrato: " + rs.getDate("data_inicio_contrato"));
-                    System.out.println("Fim do contrato: " + rs.getDate("data_fim_contrato"));
-                    System.out.println("-----------------------------------");
+                    // Pega os dados de cada coluna
+                    String cpf = rs.getString("CPF");
+                    String nome = rs.getString("Nome");
+                    String endereco = rs.getString("Endereco");
+                    String telefone = rs.getString("Telefone");
+                    String dataInicio = rs.getString("data_inicio_contrato");
+                    String dataFim = rs.getString("data_fim_contrato");
+                    int contratoId = rs.getInt("fk_Contratos_ID_contrato");
+
+                    // Cria um objeto Locatario e o adiciona na lista
+                    Locatario locatario = new Locatario(cpf, nome, endereco, telefone, dataInicio, dataFim, contratoId);
+                    locatarios.add(locatario);
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao listar locatários: " + e.getMessage());
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao listar locatários: \n" + e.getMessage(), "Erro de SQL", JOptionPane.ERROR_MESSAGE);
         }
+
+        // 3. Retorna a lista preenchida (ou vazia, se não houver dados)
+        return locatarios;
     }
 }
