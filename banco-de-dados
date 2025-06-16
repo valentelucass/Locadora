@@ -1,0 +1,94 @@
+CREATE DATABASE locadora;
+USE locadora;
+
+-- Tabela Locatarios
+CREATE TABLE Locatarios (
+    CPF VARCHAR(11) PRIMARY KEY,
+    Nome VARCHAR(100),
+    Endereco VARCHAR(200),
+    Telefone VARCHAR(15),
+    data_inicio_contrato DATE,
+    data_fim_contrato DATE,
+    fk_Contratos_ID_contrato INT,
+    FOREIGN KEY (fk_Contratos_ID_contrato) REFERENCES Contratos(ID_contratos)
+);
+
+-- Tabela Contratos
+CREATE TABLE Contratos (
+    ID_contratos INT PRIMARY KEY,
+    Placa VARCHAR(7),
+    CPF VARCHAR(11),
+    valor_mensal DECIMAL(10, 2),
+    Caucao DECIMAL(10, 2),
+    data_inicio DATE,
+    data_fim DATE,
+    Status VARCHAR(20)
+);
+
+-- Tabela Carros
+CREATE TABLE Carros (
+    Placa VARCHAR(7) PRIMARY KEY,
+    Nome VARCHAR(100),
+    Modelo VARCHAR(50),
+    Ano INT,
+    Renavam VARCHAR(20),
+    Quilometragem INT
+);
+
+-- Tabela Saidas
+CREATE TABLE Saidas (
+    ID_Placa INT PRIMARY KEY,
+    forma_pagamento VARCHAR(20),
+    ID_manutencoes INT,
+    Placa VARCHAR(7),
+    tipo_manutencao VARCHAR(50),
+    Data DATE,
+    Valor DECIMAL(10, 2),
+    Quilometragem INT,
+    Saidas_TIPO INT
+);
+
+-- Tabela Entradas
+CREATE TABLE Entradas (
+    Aluguel DECIMAL(10, 2),
+    Caucao DECIMAL(10, 2),
+    forma_pagamento VARCHAR(20)
+);
+
+-- Tabela Relacao_Saidas_Carros_Entradas
+CREATE TABLE Relacao_Saidas_Carros_Entradas (
+    fk_Saidas_ID_Placa INT,
+    fk_Saidas_ID_manutencoes INT,
+    fk_Carros_Placa VARCHAR(7),
+    PRIMARY KEY (fk_Saidas_ID_Placa, fk_Saidas_ID_manutencoes, fk_Carros_Placa),
+    FOREIGN KEY (fk_Saidas_ID_Placa) REFERENCES Saidas(ID_Placa),
+    FOREIGN KEY (fk_Saidas_ID_manutencoes) REFERENCES Saidas(ID_manutencoes),
+    FOREIGN KEY (fk_Carros_Placa) REFERENCES Carros(Placa)
+);
+
+-- Tabela Contratos_Carros
+CREATE TABLE Contratos_Carros (
+    fk_Carros_Placa VARCHAR(7),
+    fk_Contratos_ID_contratos INT,
+    PRIMARY KEY (fk_Carros_Placa, fk_Contratos_ID_contratos),
+    FOREIGN KEY (fk_Carros_Placa) REFERENCES Carros(Placa),
+    FOREIGN KEY (fk_Contratos_ID_contratos) REFERENCES Contratos(ID_contratos)
+);
+
+ALTER TABLE Saidas ADD UNIQUE (ID_manutencoes);
+ALTER TABLE Locatarios MODIFY COLUMN CPF VARCHAR(14);
+UPDATE Locatarios
+SET Nome = 'Matheuzinho'
+WHERE CPF = '5251561651';
+
+
+-- Agora inserimos um contrato de exemplo na tabela Contratos com as colunas corretas.
+INSERT INTO Contratos (ID_contratos, Placa, CPF, valor_mensal, Status)
+VALUES (1, 'ABC1234', '11122233344', 1500.00, 'Ativo');
+
+SELECT * FROM locatarios;
+SELECT * FROM Contratos;
+
+ALTER TABLE Entradas ADD COLUMN ID_entrada INT AUTO_INCREMENT PRIMARY KEY;
+ALTER TABLE Entradas ADD COLUMN fk_Contrato_ID INT;
+ALTER TABLE Entradas ADD FOREIGN KEY (fk_Contrato_ID) REFERENCES Contratos(ID_contratos);
