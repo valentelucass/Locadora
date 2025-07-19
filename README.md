@@ -1,3 +1,13 @@
+<!-- PORTFOLIO-FEATURED
+title: Cadastro de Locatários e Contratos
+description: Aplicação Java completa para cadastro de locatários e contratos, com interface gráfica, acesso a banco de dados MySQL e empacotamento via Maven. Projeto desktop independente com ícone personalizado.
+technologies: Java, Swing/JavaFX, MySQL, Maven
+demo: https://github.com/valentelucass/Locadora
+highlight: true
+image: cadastro-contratos.png
+-->
+
+
 ## 🚀 Sistema de Cadastro de Locatários e Contratos
 
 Este repositório contém um **projeto completo em Java**, desenvolvido como um grande desafio pessoal para integrar **Back-end, Front-end e banco de dados MySQL**, utilizando **Maven** e gerando uma aplicação independente com **atalho e ícone próprio**.
