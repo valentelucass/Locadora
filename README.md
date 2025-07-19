@@ -6,7 +6,9 @@ demo: https://github.com/valentelucass/Locadora
 highlight: true
 image: cadastro-contratos.png
 -->
-
+<p align="center">
+  <img src="locadora.png" alt="locadora Logo" width="3000">
+</p>
 
 ## 🚀 Sistema de Cadastro de Locatários e Contratos
 
