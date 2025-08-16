@@ -4,10 +4,10 @@ description: Aplicação Java completa para cadastro de locatários e contratos,
 technologies: Java, Swing/JavaFX, MySQL, Maven
 demo: https://github.com/valentelucass/Locadora
 highlight: true
-image: locadora.jpg
+image: foto.png
 -->
 <p align="center">
-  <img src="locadora.jpg" alt="locadora Logo" width="3000">
+  <img src="foto.png" alt="locadora Logo" width="3000">
 </p>
 
 ## 🚀 Sistema de Cadastro de Locatários e Contratos
